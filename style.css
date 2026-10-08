@@ -1,0 +1,440 @@
+/* ==========================================================================
+   1. FONTS & CSS VARIABLES
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Color palette — warm orange + cream */
+  --color-bg: #FFF7F0;
+  --color-surface: #FFFFFF;
+  --color-primary: #F97316;
+  --color-primary-dark: #EA580C;
+  --color-primary-light: #FFEDD5;
+  --color-text: #3A2415;
+  --color-text-muted: #9A7B63;
+  --color-border: #F3DFC9;
+  --color-border-focus: #F97316;
+  --color-error: #DC2626;
+  --color-error-bg: #FEF2F2;
+  --color-success: #16A34A;
+  --color-success-bg: #F0FDF4;
+
+  /* Typography */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Layout */
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-card: 0 20px 45px -20px rgba(154, 74, 14, 0.30), 0 2px 8px rgba(154, 74, 14, 0.08);
+  --transition-fast: 150ms ease;
+  --transition-base: 220ms ease;
+}
+
+/* ==========================================================================
+   2. RESET & BASE
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  background-image:
+    linear-gradient(rgba(255, 247, 240, 0.3), rgba(255, 247, 240, 0.3)),
+    url("bg.jpeg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+/* Fixed attachment is unreliable/heavy on mobile browsers, so let the
+   background scroll with the page on smaller screens instead. */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+    background-position: top center;
+  }
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   3. PAGE LAYOUT
+   ========================================================================== */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 500px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 40px 40px 36px;
+  border: 1px solid var(--color-border);
+}
+
+/* ==========================================================================
+   4. HEADER
+   ========================================================================== */
+
+.form-card__header {
+  text-align: left;
+  margin-bottom: 28px;
+}
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  margin-bottom: 14px;
+}
+
+.form-card__header h1 {
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.form-card__subtitle {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  max-width: 40ch;
+}
+
+/* ==========================================================================
+   5. SUCCESS BANNER
+   ========================================================================== */
+
+.success-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--color-success-bg);
+  color: var(--color-primary-dark);
+  border: 1px solid rgba(22, 163, 74, 0.25);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  animation: banner-in 260ms ease;
+}
+
+.success-banner svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+@keyframes banner-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   6. FORM FIELDS
+   ========================================================================== */
+
+.field {
+  margin-bottom: 20px;
+}
+
+.field label {
+  display: block;
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.required {
+  color: var(--color-error);
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field input[type="password"],
+.field textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #A5AEA9;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3.5px rgba(249, 115, 22, 0.16);
+}
+
+/* Error state */
+.field input.is-invalid,
+.field textarea.is-invalid {
+  border-color: var(--color-error);
+}
+
+.field input.is-invalid:focus,
+.field textarea.is-invalid:focus {
+  box-shadow: 0 0 0 3.5px rgba(220, 38, 38, 0.14);
+}
+
+.error-message {
+  font-size: 0.8rem;
+  color: var(--color-error);
+  margin-top: 6px;
+  min-height: 0;
+  display: none;
+}
+
+.error-message.is-visible {
+  display: block;
+  animation: error-in 150ms ease;
+}
+
+@keyframes error-in {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   7. PASSWORD FIELD (visibility toggle + strength meter)
+   ========================================================================== */
+
+.input-with-action {
+  position: relative;
+}
+
+.input-with-action input {
+  padding-right: 46px;
+}
+
+.toggle-visibility {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.toggle-visibility:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.password-strength {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.password-strength__track {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.password-strength__fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 3px;
+  background: var(--color-border);
+  transition: width var(--transition-base), background var(--transition-base);
+}
+
+.password-strength__fill[data-level="weak"] {
+  width: 33%;
+  background: var(--color-error);
+}
+
+.password-strength__fill[data-level="medium"] {
+  width: 66%;
+  background: #D97706;
+}
+
+.password-strength__fill[data-level="strong"] {
+  width: 100%;
+  background: var(--color-primary);
+}
+
+.password-strength__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  min-width: 52px;
+  text-align: right;
+}
+
+/* ==========================================================================
+   8. CHECKBOX FIELD
+   ========================================================================== */
+
+.field--checkbox {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 6px;
+}
+
+.field--checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.field--checkbox label {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.field--checkbox .error-message {
+  grid-column: 1 / -1;
+}
+
+/* ==========================================================================
+   9. SUBMIT BUTTON
+   ========================================================================== */
+
+.submit-button {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 13px 20px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.submit-button:hover {
+  background: var(--color-primary-dark);
+  box-shadow: 0 8px 18px -8px rgba(234, 88, 12, 0.55);
+}
+
+.submit-button:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   10. RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .page {
+    padding: 28px 14px;
+    align-items: flex-start;
+  }
+
+  .form-card {
+    padding: 28px 22px 26px;
+    border-radius: var(--radius-md);
+  }
+
+  .form-card__header h1 {
+    font-size: 1.4rem;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .form-card {
+    max-width: 480px;
+  }
+}
+
+/* Make the [hidden] attribute win over display:flex on the banner */
+.success-banner[hidden] {
+  display: none;
+}
